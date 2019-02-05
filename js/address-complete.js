@@ -13,27 +13,29 @@
         onPopulate: '&acOnPopulate'
       },
       link: function(scope, element, attrs) {
-        var control, elementId;
-        elementId = attrs.id;
-        control = new pca.Address([
-          {
-            element: elementId,
-            mode: pca.fieldMode.SEARCH
-          }
-        ], scope.options);
-        return control.listen("populate", function(address) {
-          var model, toApply, _i, _len, _ref;
-          toApply = "";
-          _ref = scope.models;
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            model = _ref[_i];
-            toApply += "" + model.model + " = '" + address[model.acField] + "';\n";
-          }
-          scope.$parent.$apply(toApply);
-          return typeof scope.onPopulate === "function" ? scope.onPopulate({
-            address: address
-          }) : void 0;
-        });
+		setTimeout(function(){
+			var control, elementId;
+			elementId = attrs.id;
+			control = new pca.Address([
+			  {
+				element: elementId,
+				mode: pca.fieldMode.SEARCH
+			  }
+			], scope.options);
+			return control.listen("populate", function(address) {
+			  var model, toApply, _i, _len, _ref;
+			  toApply = "";
+			  _ref = scope.models;
+			  for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+				model = _ref[_i];
+				toApply += "" + model.model + " = '" + address[model.acField] + "';\n";
+			  }
+			  scope.$parent.$apply(toApply);
+			  return typeof scope.onPopulate === "function" ? scope.onPopulate({
+				address: address
+			  }) : void 0;
+			});
+		},100);
       }
     };
   });
