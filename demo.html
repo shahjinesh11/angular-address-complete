@@ -3,36 +3,38 @@
 <head>
     <title>Address complete demo</title>
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="https://ws1.postescanada-canadapost.ca/css/addresscomplete-2.00.min.css?key=RE49-RM71-UC95-XU84">
 </head>
 <body data-ng-app="demo">
 <div>
     <div data-ng-controller="AppCtrl">
+	<button type="button" ng-click="addnewrow()">Add new row</button>
+	<div ng-repeat="address in rows track by $index">
+		{{address}}
         <div id="address">
             <label>Adresse</label>
-            <input id="addressLookup" type="text" placeholder="Commencez la recherche ici" autocomplete="off" data-ac-address-complete data-ac-options="acOptions" data-ac-models="acModels" data-ac-on-populate="addressPopulated(address)">
-            <input id="numeroCivique" type="text" placeholder="Numéro" data-ng-model="address.civicNumber">
-            <input id="rue" type="text" placeholder="Rue" data-ng-model="address.street">
-            <input id="appartement" type="text" placeholder="App" data-ng-model="address.appartment">
-            <input id="ville" type="text" placeholder="Ville" data-ng-model="address.city">
-            <input id="province" type="text" placeholder="Province" data-ng-model="address.province">
-            <input id="codePostal" type="text" placeholder="Code postal" data-ng-model="address.postalCode">
+            <input id="addressLookup{{$index}}" type="text" placeholder="Commencez la recherche ici" autocomplete="off" data-ac-address-complete data-ac-options="acOptions" data-ac-models="acModels" data-ac-on-populate="addressPopulated(address)">
+            <input id="civicNumber{{$index}}" type="text" placeholder="Numéro" data-ng-model="address.civicNumber">
+            <input id="street{{$index}}" type="text" placeholder="Rue" data-ng-model="address.street">
+            <input id="appartment{{$index}}" type="text" placeholder="App" data-ng-model="address.appartment">
+            <input id="city{{$index}}" type="text" placeholder="city" data-ng-model="address.city">
+            <input id="province{{$index}}" type="text" placeholder="Province" data-ng-model="address.province">
+            <input id="postalCode{{$index}}" type="text" placeholder="Code postal" data-ng-model="address.postalCode">
             {{address.civicNumber}} {{address.street}} {{acOptions.key}}
         </div>
+	</div>
     </div>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-<script src="//netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/2.3.2/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://ws1.postescanada-canadapost.ca/js/addresscomplete-2.00.min.js?key=RE49-RM71-UC95-XU84"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
 <script src="js/address-complete.js" charset="utf-8"></script>
 <script type="application/javascript">
     app = angular.module('demo', ['ac-address-complete']);
-
-    app.controller('AppCtrl', function($scope) {
-
+	app.controller('AppCtrl', function($scope) {
         $scope.acModels = [
             { model: "address.civicNumber", acField: "BuildingNumber" },
             { model: "address.street", acField: "Street" },
@@ -41,16 +43,35 @@
             { model: "address.province", acField: "Province" },
             { model: "address.postalCode", acField: "PostalCode" }
         ];
-
         $scope.acOptions = {
-            key: "RE49-RM71-UC95-XU84",
+            key: "KZ45-DH77-GC91-WH49",
             suppressAutocomplete: true
         };
-
         $scope.addressPopulated = function(address) {
             console.log("addressPopulated with\n\n" + address.Label);
             console.log("address object :\n\n" + angular.toJson(address));
         };
+		
+		$scope.rows = [];
+		var rowobj = {
+			"addressLookup": '',
+			"civicNumber": '',
+			"street": '',
+			"appartment": '',
+			"city": '',
+			"province": '',
+			"postalCode": ''
+		};
+		
+		//Initially first default row
+		$scope.rows.push(rowobj); 
+		
+		//Add dynamic rows
+		$scope.addnewrow = function() 
+		{
+			rowobj = { "addressLookup": '',"civicNumber": '',"rue": '',"appartement": '', "ville": '',"province": '',"codePostal": ''};
+			$scope.rows.push(rowobj);
+		}
     });
 </script>
 </body>
